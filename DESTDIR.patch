@@ -1,0 +1,45 @@
+--- libspotify-12.1.51-Linux-i686-release/Makefile	2013-08-13 21:49:48.074176513 +0300
++++ libspotify-12.1.51-Linux-i686-release/Makefile	2013-08-13 21:52:59.269310658 +0300
+@@ -1,25 +1,29 @@
++DESTDIR ?=
+ prefix ?= /usr/local
++lib ?= lib
++ldconfig ?= ldconfig
+ 
+ all:
+ 	$(error "Usage: make [prefix=/install/me/here] install | uninstall")
+ 
+ install:
+-	mkdir -p $(prefix)/include/libspotify
+-	install include/libspotify/api.h $(prefix)/include/libspotify
++	mkdir -p $(DESTDIR)$(prefix)/include/libspotify
++	install -p include/libspotify/api.h $(DESTDIR)$(prefix)/include/libspotify
+ 
+-	mkdir -p $(prefix)/lib
+-	install -T lib/libspotify.so.12 $(prefix)/lib/libspotify.so.12.1.51
++	mkdir -p $(DESTDIR)$(prefix)/$(lib)
++	install -pT lib/libspotify.so.12 $(DESTDIR)$(prefix)/$(lib)/libspotify.so.12.1.51
+ 
+-	cd $(prefix)/lib && ln -sf libspotify.so.12.1.51 libspotify.so.12 && ln -sf libspotify.so.12.1.51 libspotify.so
++	ln -sf libspotify.so.12.1.51 $(DESTDIR)$(prefix)/$(lib)/libspotify.so.12
++	ln -sf libspotify.so.12.1.51 $(DESTDIR)$(prefix)/$(lib)/libspotify.so
+ 
+-	mkdir -p $(prefix)/lib/pkgconfig
+-	sed -e s:PKG_PREFIX:$(prefix):g <lib/pkgconfig/libspotify.pc >$(prefix)/lib/pkgconfig/libspotify.pc
++	mkdir -p $(DESTDIR)$(prefix)/$(lib)/pkgconfig
++	sed -e s:PKG_PREFIX:$(prefix):g <lib/pkgconfig/libspotify.pc >$(DESTDIR)$(prefix)/$(lib)/pkgconfig/libspotify.pc
+ 
+-	ldconfig
++	$(ldconfig)
+ 
+ uninstall:
+-	rm -rf $(prefix)/include/libspotify
+-	rm -f  $(prefix)/lib/libspotify.so.12.1.51
+-	rm -f  $(prefix)/lib/libspotify.so.12
+-	rm -f  $(prefix)/lib/libspotify.so
+-	rm -f  $(prefix)/lib/pkgconfig/libspotify.pc
++	rm -rf $(DESTDIR)$(prefix)/include/libspotify
++	rm -f  $(DESTDIR)$(prefix)/$(lib)/libspotify.so.12.1.51
++	rm -f  $(DESTDIR)$(prefix)/$(lib)/libspotify.so.12
++	rm -f  $(DESTDIR)$(prefix)/$(lib)/libspotify.so
++	rm -f  $(DESTDIR)$(prefix)/$(lib)/pkgconfig/libspotify.pc

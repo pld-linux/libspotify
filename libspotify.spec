@@ -1,10 +1,12 @@
+# NOTE: deprecated and unmaintained
 # TODO
 # - figure out license and redistribution terms
 #
 # Conditional build:
 %bcond_without	apidocs		# do not build and package API docs
 
-Summary:	libspotify C API
+Summary:	C API for Spotify music streaming service
+Summary(pl.UTF-8):	API C do serwisu udostępniającego muzykę w postaci strumieni
 Name:		libspotify
 Version:	12.1.51
 Release:	1
@@ -25,17 +27,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 The libspotify C API package allows third-party developers to write
 applications that utilize the Spotify music streaming service.
 
-%package common
-Summary:	Common files for %{name} library
-Summary(pl.UTF-8):	Wspólne pliki biblioteki %{name}
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description common
-Common files for %{name} library.
-
-%description common -l pl.UTF-8
-Wspólne pliki biblioteki %{name}.
+%description -l pl.UTF-8
+Pakiet libspotify to API C pozwalające zewnętrznym programistom
+tworzyć aplikacje wykorzystujące serwis Spotify, udostępniający muzykę
+w postaci strumieni.
 
 %package devel
 Summary:	Header files for %{name} library
@@ -62,12 +57,12 @@ Static %{name} library.
 Statyczna biblioteka %{name}.
 
 %package apidocs
-Summary:	%{name} API documentation
+Summary:	API documentation for %{name} library
 Summary(pl.UTF-8):	Dokumentacja API biblioteki %{name}
 Group:		Documentation
 
 %description apidocs
-API and internal documentation for %{name} library.
+API documentation for %{name} library.
 
 %description apidocs -l pl.UTF-8
 Dokumentacja API biblioteki %{name}.
@@ -82,8 +77,8 @@ Dokumentacja API biblioteki %{name}.
 %patch0 -p1
 
 install -d man
-mv share/doc/libspotify/examples .
-mv share/man3 man
+%{__mv} share/doc/libspotify/examples .
+%{__mv} share/man3 man
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -106,13 +101,13 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README ChangeLog LICENSE
 %attr(755,root,root) %{_libdir}/libspotify.so.*.*.*
-%ghost %{_libdir}/libspotify.so.12
+%attr(755,root,root) %ghost %{_libdir}/libspotify.so.12
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}.so
-%{_includedir}/%{name}
-%{_pkgconfigdir}/%{name}.pc
+%attr(755,root,root) %{_libdir}/libspotify.so
+%{_includedir}/libspotify
+%{_pkgconfigdir}/libspotify.pc
 %{_mandir}/man3/*.3spotify*
 
 %if %{with apidocs}

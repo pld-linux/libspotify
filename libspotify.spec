@@ -74,7 +74,7 @@ Dokumentacja API biblioteki %{name}.
 %ifarch %{x8664}
 %setup -q -n %{name}-%{version}-Linux-x86_64-release
 %endif
-%patch0 -p1
+%patch -P0 -p1
 
 install -d man
 %{__mv} share/doc/libspotify/examples .
